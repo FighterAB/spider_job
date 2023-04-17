@@ -90,6 +90,7 @@ def getAllTags():
             addressTop += item[0] + ','
     return len(jobs), len(users), educationsTop, salaryTop, addressTop,salaryMonthTop,praticeMax[0][0]
 
+# 获取招聘信息获取时间
 def getJobTimeData():
     jobs = getAllJobs()
     JobTimes = {}
@@ -104,7 +105,44 @@ def getJobTimeData():
         row.append(k)
         column.append(v)
     return row,column
-    print(row,column)
+
+
+#获取省份数量
+def getCityData():
+    jobs = getAllJobs()
+    cities = {}
+    for job in jobs:
+        for k , v in city.items():
+            if job.address in v:
+                if cities.get(k, -1) == -1:
+                    cities[k] = 1
+                else:
+                    cities[k] += 1
+    result = []
+    for k, v in cities.items():
+        result.append({
+            'name': k,
+            'value': v,
+        })
+    return result
+
+
+#获取地区数量
+def getAreaData():
+    jobs = getAllJobs()
+    areas = {}
+    for job in jobs:
+        if areas.get(str(job.address), -1) == -1:
+            areas[str(job.address)] = 1
+        else:
+            areas[str(job.address)] += 1
+    result = []
+    for k, v in areas.items():
+        result.append({
+            'name': k,
+            'value': v,
+        })
+    return result
 
 
 # def gettableData():

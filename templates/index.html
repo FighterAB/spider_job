@@ -11,14 +11,14 @@
     <title>首页</title>
 
 
-{#    <link rel="stylesheet" href="/static/css/jquery-ui-1.10.3.custom.min.css">#}
+    {#    <link rel="stylesheet" href="/static/css/jquery-ui-1.10.3.custom.min.css">#}
     <link rel="stylesheet" href="/static/css/entypo.css">
-{#    <link rel="stylesheet" href="/static/css/css.css">#}
+    {#    <link rel="stylesheet" href="/static/css/css.css">#}
     <link rel="stylesheet" href="/static/css/bootstrap.css">
     <link rel="stylesheet" href="/static/css/neon-core.css">
-{#    <link rel="stylesheet" href="/static/css/neon-theme.css">#}
-{#    <link rel="stylesheet" href="/static/css/neon-forms.css">#}
-{#    <link rel="stylesheet" href="/static/css/custom.css">#}
+    {#    <link rel="stylesheet" href="/static/css/neon-theme.css">#}
+    {#    <link rel="stylesheet" href="/static/css/neon-forms.css">#}
+    {#    <link rel="stylesheet" href="/static/css/custom.css">#}
 
     <script src="/static/js/jquery-1.11.0.min.js"></script>
 
@@ -207,13 +207,10 @@
                                        class="bg"><i class="entypo-cog"></i></a>
                                     <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
                                     <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a>
-                                    {#                                    <a href="#" data-rel="close"><i class="entypo-cancel"></i></a>#}
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div id="main" style="width: 100%;height: 300px ;margin: 0px auto">
-
-                                </div>
+                                <div id="main" style="width: 100%;height: 300px ;margin: 0px auto"></div>
                             </div>
                         </div>
 
@@ -360,7 +357,31 @@
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <h4>
+                                地图
+                            </h4>
+                        </div>
 
+                        <div class="panel-options">
+                            <a href="#sample-modal" data-toggle="modal" data-target="#sample-modal-dialog-1" class="bg"><i
+                                    class="entypo-cog"></i></a>
+                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+                            <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="panel-body no-padding">
+                        <button onclick="onBack()">返回上一级</button>
+                        <div id="mainThree" style="width: 100%;height:390px "></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
         <footer class="main">
@@ -381,11 +402,11 @@
     <script src="/static/js/bootstrap.js"></script>
     <script src="/static/js/joinable.js"></script>
     <script src="/static/js/resizeable.js"></script>
-{#    <script src="/static/js/neon-api.js"></script>#}
-{#    <script src="/static/js/jquery.sparkline.min.js"></script>#}
-{#    <script src="/static/js/d3.v3.js"></script>#}
-{#    <script src="/static/js/rickshaw.min.js"></script>#}
-{#    <script src="/static/js/neon-chat.js"></script>#}
+    {#    <script src="/static/js/neon-api.js"></script>#}
+    {#    <script src="/static/js/jquery.sparkline.min.js"></script>#}
+    {#    <script src="/static/js/d3.v3.js"></script>#}
+    {#    <script src="/static/js/rickshaw.min.js"></script>#}
+    {#    <script src="/static/js/neon-chat.js"></script>#}
     <script src="/static/js/neon-custom.js"></script>
     <script src="/static/js/neon-demo.js"></script>
     <script src="/static/js/echarts.min.js"></script>
@@ -431,148 +452,151 @@
         option && myChart.setOption(option);
 
     </script>
+    {#数据获取时间树状图#}
     <script>
 
-        var app = {};
 
-        var chartDom = document.getElementById('mainTwo');
-        var myChart = echarts.init(chartDom);
-        var option;
+    </script>
+    {#地图#}
+    <script>
+        {#var ROOT_PATH = 'http://127.0.0.1:8000/static/json/';#}
+        var ROOT_PATH = 'https://geojson.cn/api/data';
+        var mCharts = echarts.init(document.getElementById('mainThree'))
 
-        const categories = (function () {
-            let res =
-            {{ row | safe }}
-            return res;
-        })();
-        const categories2 = (function () {
-            let res = [];
-            let len = 10;
-            while (len--) {
-                res.push(10 - len - 1);
-            }
-            return res;
-        })();
-        const data = (function () {
-            let res = {{ column | safe }};
+        var provinces = {
+            北京: 110000,
+            天津: 120000,
+            河北: 130000,
+            山西: 140000,
+            内蒙古: 150000,
+            辽宁: 210000,
+            吉林: 220000,
+            黑龙江: 230000,
+            上海: 310000,
+            江苏: 320000,
+            浙江: 330000,
+            安徽: 340000,
+            福建: 350000,
+            江西: 360000,
+            山东: 370000,
+            河南: 410000,
+            湖北: 420000,
+            湖南: 430000,
+            广东: 440000,
+            广西: 450000,
+            海南: 460000,
+            重庆: 500000,
+            四川: 510000,
+            贵州: 520000,
+            云南: 530000,
+            西藏: 540000,
+            陕西: 610000,
+            甘肃: 620000,
+            青海: 630000,
+            宁夏: 640000,
+            新疆: 650000,
+            台湾: 710000,
+            香港: 810000,
+            澳门: 820000,
+        }
 
-            return res;
-        })();
-        const data2 = (function () {
-            let res = [];
-            let len = 0;
-            while (len < 10) {
-                res.push(+(Math.random() * 10 + 5).toFixed(1));
-                len++;
-            }
-            return res;
-        })();
-        option = {
-            title: {
-                text: 'Dynamic Data'
-            },
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'cross',
-                    label: {
-                        backgroundColor: '#283b56'
-                    }
-                }
-            },
-            legend: {},
-            toolbox: {
-                show: true,
-                feature: {
-                    dataView: {readOnly: false},
-                    restore: {},
-                    saveAsImage: {}
-                }
-            },
-            dataZoom: {
-                show: false,
-                start: 0,
-                end: 100
-            },
-            xAxis: [
-                {
-                    type: 'value',
-                    boundaryGap: true,
-                    data: categories
-                },
-                {
-                    type: 'category',
-                    boundaryGap: true,
-                    data: categories2
-                }
-            ],
-            yAxis: [
-                {
-                    type: 'value',
-                    scale: true,
-                    name: 'Price',
-                    max: 30,
-                    min: 0,
-                    boundaryGap: [0.2, 0.2]
-                },
-                {
-                    type: 'value',
-                    scale: true,
-                    name: 'Order',
-                    max: 1200,
-                    min: 0,
-                    boundaryGap: [0.2, 0.2]
-                }
-            ],
-            series: [
-                {
-                    name: 'Dynamic Bar',
-                    type: 'bar',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    data: data
-                },
-                {
+        // 注册点击事件
+        mCharts.on('click', function (params) {
+            myChart.clear()
+            if (provinces.hasOwnProperty(params.name)) {
+                lastArea = nowArea  // 获取父级的区域
+                let area = provinces[params.name]
+                getMap(area)
+            } else {}
+        });
+        myChart.on('dblclick',function(params) {
+            alert('sss')
+        })
 
-                    name: 'Dynamic Bs',
-                    type: 'line',
-                    xAxisIndex: 1,
-                    yAxisIndex: 1,
-                    data: data2
-                }
-            ]
-        };
-        app.count = 11;
-        setInterval(function () {
-            let axisData = new Date().toLocaleTimeString().replace(/^\D*/, '');
-            data.shift();
-            data.push(Math.round(Math.random() * 1000));
-            data2.shift();
-            data2.push(+(Math.random() * 10 + 5).toFixed(1));
-            categories.shift();
-            categories.push(axisData);
-            categories2.shift();
-            categories2.push(app.count++);
-            myChart.setOption({
-                xAxis: [
-                    {
-                        data: categories
+        // 定义两个变量，nowArea储存当前的区域，lastArea存储父级区域（当前的区域将作为下一个区域的父级）
+        let nowArea, lastArea
+
+        getMap('china')
+
+
+
+
+
+        // 请求地图json数据
+        function getMap(area) {
+            $.get(ROOT_PATH + `/${area}.json`, function (res) {
+
+                // 注册地图的矢量数据
+                echarts.registerMap('chinaMap', res)
+                option = {
+                    zoom: 5,
+                    title: {
+                        text: '中国地图',
+                        left: 'right'
                     },
-                    {
-                        data: categories2
-                    }
-                ],
-                series: [
-                    {
-                        data: data
+                    tooltip: {
+                        trigger: 'item',
+                        showDelay: 0,
+                        transitionDuration: 0.2
                     },
-                    {
-                        data: data2
-                    }
-                ]
-            });
-        }, 2100);
+                    visualMap: {
+                        left: 'right',
+                        min: 0,
+                        max: 380,
+                        inRange: {
+                            color: [
+                                '#313695',
+                                '#4575b4',
+                                '#74add1',
+                                '#abd9e9',
+                                '#e0f3f8',
+                                '#ffffbf',
+                                '#fee090',
+                                '#fdae61',
+                                '#f46d43',
+                                '#d73027',
+                                '#a50026'
+                            ]
+                        },
+                        text: ['High', 'Low'],
+                        calculable: true
+                    },
+                    toolbox: {
+                        show: true,
+                        //orient: 'vertical',
+                        left: 'left',
+                        top: 'top',
+                        feature: {
+                            dataView: {readOnly: false},
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [
+                        {
+                            name: '个数',
+                            type: 'map',
+                            roam: true,
+                            map: 'chinaMap',
+                            emphasis: {
+                                label: {
+                                    show: true
+                                }
+                            },
+                            data: {{ areasData | safe }}
+                        }
+                    ]
+                };
+                mCharts.setOption(option,true)
 
-        option && myChart.setOption(option);
+                nowArea = area  // 记录当前的区域，作为下一层级的父级mi
+            })
+        }
+
+        //返回上一级
+        function onBack() {
+            getMap(lastArea)
+        }
 
     </script>
 </div>

@@ -91,7 +91,14 @@ def home(request):
     # 获取全部标签
     jobsLen, usersLen, educationsTop, salaryTop, addressTop, salaryMonthTop, praticeMax = getHomeData.getAllTags()
     # 获取job获取时间
-    row,column = getHomeData.getJobTimeData()
+    row, column = getHomeData.getJobTimeData()
+    # 获取地区
+    areasData = getHomeData.getAreaData()
+
+    citiesData = getHomeData.getCityData()
+
+    areasData.extend(citiesData)
+
     return render(request, 'index.html', {
         'userInfo': userInfo,
         'dateInfo': {
@@ -109,9 +116,11 @@ def home(request):
             'addressTop': addressTop,
             'salaryMonthTop': salaryMonthTop,
             'praticeMax': praticeMax,
-            'row': row,
-            'column': column
-        }
+
+        },
+        'row': row,
+        'column': column,
+        'areasData': areasData,
     })
 
 
