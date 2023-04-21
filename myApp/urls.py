@@ -18,7 +18,9 @@ urlpatterns = [
 
     path('historyData/', views.historyData, name="historyData"),
 
-    path('addHistory/<int:jobId>/', views.addHistory, name="addHistory"),
+    path('addHistory/<int:jobId>', views.addHistory, name="addHistory"),
+
+    path('removeHistory/<int:hisId>', views.removeHistory, name="removeHistory"),
 
     path('salary/', views.salary, name="salary"),
 

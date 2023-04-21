@@ -139,7 +139,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{%  url 'educational' %}">
+                        <a href="{% url 'educational' %}">
                             <i class="entypo-attach"></i>
                             <span>学历分布</span>
                         </a>
@@ -158,7 +158,6 @@
                     </li>
                 </ul>
             </li>
-
 
 
         </ul>
@@ -196,56 +195,101 @@
         <h2>历史查阅</h2>
         <br>
         <div class="row">
-            <div class="member-entry">
+            <div class="col-md-12">
 
-                <a href="extra-timeline.html" class="member-img">
-                    {#                    <img src="static/picture/member.jpg" class="img-rounded">#}
-                    <i class="entypo-forward"></i>
-                </a>
 
-                <div class="member-details">
-                    <h4>
-                        <a href="extra-timeline.html">Johnnie Linton</a>
-                    </h4>
+                {% for i in historyData %}
+                    <div class="member-entry">
+                        <a href="{{ i.job.companyUrl }}" class="member-img">
+                            <img src="{{ i.job.companyAvatar }}" class="img-rounded">
+                            <i class="entypo-forward"></i>
+                        </a>
 
-                    <!-- Details with Icons -->
-                    <div class="row info-list">
+                        <div class="member-details">
+                            <h4>
+                                <div>
+                                    <a class="text-info" href="{{ i.job.detailUrl }}">{{ i.job.title }}</a>
+                                </div>
 
-                        <div class="col-sm-4">
-                            <i class="entypo-briefcase"></i>
-                            Co-Founder at <a href="#">Complete Tech</a>
-                        </div>
+                                {#                                <a href="{{ i.companyUrl }}" style="font-weight: bold">{{ i.companyTitle }}</a>#}
+                            </h4>
 
-                        <div class="col-sm-4">
-                            <i class="entypo-twitter"></i>
-                            <a href="#">@johnnie</a>
-                        </div>
+                            <!-- Details with Icons -->
+                            <div class="row info-list">
 
-                        <div class="col-sm-4">
-                            <i class="entypo-facebook"></i>
-                            <a href="#">fb.me/johnnie</a>
-                        </div>
+                                <div class="col-sm-4">
+                                    <i class="entypo-briefcase"></i>
+                                    {#                                    <a class="text-info" href="{{ i.detailUrl }}">{{ i.title }}</a>#}
+                                    <a href="{{ i.job.companyUrl }}"
+                                       style="font-weight: bold">{{ i.job.companyTitle }}</a>
 
-                        <div class="clear"></div>
+                                </div>
 
-                        <div class="col-sm-4">
-                            <i class="entypo-location"></i>
-                            <a href="#">Prishtina</a>
-                        </div>
+                                <div class="col-sm-4">
+                                    <i class="entypo-star"></i>
+                                    <a class='text-danger' href="#">
+                                        {% if i.pratice == 0 %}
+                                            {{ i.job.salary }} K/月
+                                            {% if i.job.salaryMonth != '0' %}
+                                                ·{{ i.job.salaryMonth }}薪
+                                            {% endif %}
+                                        {% else %}
+                                            {{ i.job.salary }}元/天
+                                        {% endif %}
+                                    </a>
+                                </div>
 
-                        <div class="col-sm-4">
-                            <i class="entypo-mail"></i>
-                            <a href="#">john@gmail.com</a>
-                        </div>
+                                <div class="col-sm-4">
+                                    <i class="entypo-eye"></i>
+                                    <a href="#">
+                                        {{ i.job.workExperience }}|{{ i.job.educational }}|{{ i.job.type }}
+                                    </a>
+                                </div>
 
-                        <div class="col-sm-4">
-                            <i class="entypo-linkedin"></i>
-                            <a href="#">johnkennedy</a>
+                                <div class="clear"></div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-location"></i>
+                                    <a href="#">{{ i.job.address }}</a>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-mail"></i>
+                                    <a href="#">{{ i.job.hrWork }}->{{ i.job.hrName }}</a>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-user"></i>
+
+                                    <a href="#">{{ i.job.companyStatus }} | {{ i.job.companyPeople }}人</a>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    {% for i in i.job.workTag %}
+                                        {% if i != '' %}
+                                            <code>{{ i }}</code>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-6">
+                                    {% if  i.job.companyTags != '无' %}
+                                        {% for i in i.job.companyTags %}
+                                            {% if i != '无' %}
+                                                <code style="margin-bottom: 3px;display: inline-block">{{ i }}</code>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="/myApp/removeHistory/{{ i.id }}" type="button"
+                                       class="btn btn-danger">删除历史</a>
+                                </div>
+
+                            </div>
                         </div>
 
                     </div>
-                </div>
-
+                {% endfor %}
             </div>
         </div>
 

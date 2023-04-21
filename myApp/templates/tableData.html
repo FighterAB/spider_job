@@ -199,7 +199,6 @@
             <div class="col-md-12">
                 {% for i in c_page %}
                     <div class="member-entry">
-
                         <a href="{{ i.companyUrl }}" class="member-img">
                             <img src="{{ i.companyAvatar }}" class="img-rounded">
                             <i class="entypo-forward"></i>
@@ -207,7 +206,11 @@
 
                         <div class="member-details">
                             <h4>
-                                <a href="extra-timeline.html" style="font-weight: bold">{{ i.companyTitle }}</a>
+                                <div onclick="myBtn('{{ i.detailUrl }}',{{ i.id }})">
+                                    <a class="text-info">{{ i.title }}</a>
+                                </div>
+
+                                {#                                <a href="{{ i.companyUrl }}" style="font-weight: bold">{{ i.companyTitle }}</a>#}
                             </h4>
 
                             <!-- Details with Icons -->
@@ -215,7 +218,9 @@
 
                                 <div class="col-sm-4">
                                     <i class="entypo-briefcase"></i>
-                                    <a class="text-info" href="{{ i.detailUrl }}">{{ i.title }}</a>
+                                    {#                                    <a class="text-info" href="{{ i.detailUrl }}">{{ i.title }}</a>#}
+                                    <a href="{{ i.companyUrl }}" style="font-weight: bold">{{ i.companyTitle }}</a>
+
                                 </div>
 
                                 <div class="col-sm-4">
@@ -267,12 +272,14 @@
                                     {% endfor %}
                                 </div>
                                 <div class="col-sm-6">
-                                    <i></i>
-                                    {% for i in i.companyTags %}
-                                        {% if i != '无' %}
-                                            <code style="margin-bottom: 3px;display: inline-block">{{ i }}</code>
-                                        {% endif %}
-                                    {% endfor %}
+                                    {% if  i.job.companyTags != '无' %}
+                                        {% for i in i.companyTags %}
+                                            {% if i != '无' %}
+                                                <code style="margin-bottom: 3px;display: inline-block">{{ i }}</code>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
                                 </div>
 
                             </div>
@@ -334,6 +341,17 @@
 {#<script src="/static/js/fileinput.js"></script>#}
 </body>
 
+<script type="text/javascript">
+    function myBtn(a, jobId) {
+        //打开连接
+        let url = '/myApp/addHistory/' + jobId
+        window.location.href = a
+        $.post(url)
+
+
+        //
+    }
+</script>
 <script>
     $(function () {
         //禁用“确认重新提交表单”

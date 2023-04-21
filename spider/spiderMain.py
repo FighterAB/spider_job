@@ -1,3 +1,6 @@
+import linecache
+import random
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -21,6 +24,14 @@ from myApp.models import JobInfo
 
 
 class spider(object):
+
+    def getProxy(self):
+        count = len(open('IP.txt', 'r').readlines())
+        j = random.randint(1, count)
+        line = linecache.getline('IP.txt', j)
+        list = line.split("'")
+        proxy = '--proxy-server=' + list[1].lower() + "://" + list[3]
+        return proxy
     def __init__(self, type, page):
         self.type = type  # 岗位关键正
         self.page = page  # 页码数
@@ -29,6 +40,9 @@ class spider(object):
     def startBrowser(self):
         server = Service('./chromedriver.exe')
         options = webdriver.ChromeOptions()
+        # 代理IP
+        proxy = self.getProxy()
+        options.add_argument(proxy)
         # 浏览器复用
         options.add_experimental_option('debuggerAddress', 'localhost:9222 ')  # chrome.exe --remote-debugging-port=9222
         # options.add_experimental_option('excludeSwitches', ['enable-automation'])
@@ -91,7 +105,7 @@ class spider(object):
                 # workTag
                 workTag = job.find_elements(by=By.XPATH,
                                             value=".//div[contains(@class,'job-card-footer')]/ul[@class='tag-list']/li")
-                workTag = json.dumps(list(map(lambda x: x.text, workTag)))  # 不明白
+                workTag = json.dumps(list(map(lambda x: x.text, workTag)),ensure_ascii=False)  # 不明白
 
                 # pratice
 
@@ -159,7 +173,7 @@ class spider(object):
                 if not companyTags:
                     companyTags = "无"
                 else:
-                    companyTags = json.dumps(companyTags)
+                    companyTags = json.dumps(companyTags,ensure_ascii=False)
                     # companyTags = json.dumps(companyTags.split('，'))
 
                 # detailUrl
@@ -224,7 +238,6 @@ class spider(object):
             # JobInfo.objects.filter(title=job[0],address=job[1],type=job[2],educational=job[3],hrWork=job[9],hrName=job[10],companyTitle=job[12]).update(companyTags=job[8])
 
             # 添加数据
-            print(len(job[17]))
             JobInfo.objects.create(
                 title=job[0],
                 address=job[1],
@@ -264,11 +277,12 @@ class spider(object):
 
 
 if __name__ == '__main__':
-    # job = ['java', 'python', 'php', 'c++', 'c#', 'go', 'web前端','大数据','爬虫']
+    job = ['python', 'php', 'c++', 'c#', 'go', 'web前端','大数据','爬虫',]
     # job = ['php', 'c语言', 'c++', 'c#', 'go', 'web前端', '大数据']
     # job = ['php', 'c语言']
+    # job = [  'web前端', '大数据']
     # for i in range(len(job)):
-    #     print("这种爬取%s的数据" % job[i])
+    #     print("正在爬取%s的数据" % job[i])
     #     spiderObj = spider(type=job[i], page=1)
     #     spiderObj.init()
     #     spiderObj.main(10)

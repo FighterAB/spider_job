@@ -76,6 +76,7 @@ WSGI_APPLICATION = "Jop_spider.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# 本地
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -86,6 +87,18 @@ DATABASES = {
         "PORT": "3306",
     }
 }
+
+# 远程
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "job",
+#         "USER": "root",
+#         "PASSWORD": "1109953509Yao..",
+#         "HOST": "106.14.236.129",
+#         "PORT": "3306",
+#     }
+# }
 
 
 # Password validation

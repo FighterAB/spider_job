@@ -104,6 +104,7 @@ def getJobTimeData():
     for k, v in JobTimes.items():
         row.append(k)
         column.append(v)
+    print(row,column)
     return row,column
 
 

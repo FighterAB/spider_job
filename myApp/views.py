@@ -92,11 +92,12 @@ def home(request):
     jobsLen, usersLen, educationsTop, salaryTop, addressTop, salaryMonthTop, praticeMax = getHomeData.getAllTags()
     # 获取job获取时间
     row, column = getHomeData.getJobTimeData()
+    print(row, column)
     # 获取地区
     areasData = getHomeData.getAreaData()
-
+    #获取省份
     citiesData = getHomeData.getCityData()
-
+    #地区与省份拼接
     areasData.extend(citiesData)
 
     return render(request, 'index.html', {
@@ -161,6 +162,7 @@ def changePassword(request):
 def tableData(request):
     userInfo = User.objects.get(username=request.session.get('username'))
     tableData = getTableData.getTableData()
+    # print(tableData[2].id)
     # 分页
     paginator = Paginator(tableData, 10)
     cur_page = 1
@@ -179,6 +181,7 @@ def tableData(request):
 
     return render(request, 'tableData.html', {
         'userInfo': userInfo,
+        'tableData': tableData,
         'c_page': c_page,
         'page_range': page_range,
         'paginator': paginator,
@@ -189,17 +192,21 @@ def tableData(request):
 # 历史查询
 def historyData(request):
     userInfo = User.objects.get(username=request.session.get('username'))
-
+    historyData =  getHistoryData.getHistoryData(userInfo)
     return render(request, 'historyData.html', {
         'userInfo': userInfo,
+        'historyData': historyData,
     })
-
 
 def addHistory(request, jobId):
     userInfo = User.objects.get(username=request.session.get('username'))
+    if request.POST.get('jobId'): jobId = request.POST.get('jobId')
     getHistoryData.addHistory(userInfo, jobId)
     return redirect('historyData')
 
+def removeHistory(request, hisId):
+    getHistoryData.removeHistory(hisId)
+    return redirect('historyData')
 
 # 薪资
 def salary(request):
