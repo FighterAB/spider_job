@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from myApp import models
-from myApp.models import User, Admin
+from myApp.models import User
 from .utils.error import *
 import hashlib
 from .utils import getHomeData
@@ -16,7 +16,8 @@ from .utils import getCompanyCharData
 from .utils import getEducationalCharData
 from .utils import getCompanyStatusCharData
 from .utils import getAddressCharData
-
+from .utils import getRecommend
+from django.contrib.auth.hashers import make_password
 
 # 登录
 def login(request):
@@ -25,10 +26,12 @@ def login(request):
     elif request.method == 'POST':
         username = request.POST.get("username")
         password = request.POST.get("password")
+        print(make_password(password))
         # md5加密
         md5 = hashlib.md5()
         md5.update(password.encode())
         password = md5.hexdigest()
+
         try:
             user_obj = User.objects.get(username=username, password=password)
             request.session['username'] = user_obj.username
@@ -65,6 +68,7 @@ def registry(request):
             md5 = hashlib.md5()
             md5.update(pwd.encode())
             pwd = md5.hexdigest()
+
             User.objects.create(username=username, password=pwd)
             return redirect('login')
         return errorResponse(request, '该用户已被注册！')
@@ -92,7 +96,6 @@ def home(request):
     jobsLen, usersLen, educationsTop, salaryTop, addressTop, salaryMonthTop, praticeMax = getHomeData.getAllTags()
     # 获取job获取时间
     row, column = getHomeData.getJobTimeData()
-    print(row, column)
     # 获取地区
     areasData = getHomeData.getAreaData()
     #获取省份
@@ -325,5 +328,16 @@ def address(request):
         'companyPeopleData': companyPeopleData,
         'educationalData': educationalData,
         'distData': distData,
+    })
+    pass
+
+def recommend(request):
+    userInfo = User.objects.get(username=request.session.get('username'))
+    jobs = getRecommend.getRecommend(userInfo)
+
+
+    return render(request,'recommend.html', {
+        'userInfo': userInfo,
+        'jobs':jobs
     })
     pass

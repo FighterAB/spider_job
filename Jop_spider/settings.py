@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -27,10 +26,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
+    'simpleui',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -71,7 +70,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "Jop_spider.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -119,7 +117,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -131,21 +128,80 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-#静态文件
-STATICFILES_DIRS=(
+# 静态文件
+STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static')
     ,)
 
-#media配置路径
+# media配置路径
 MEDIA_URL = "media/"
-MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# simpleui配置
+# 换成自己Logo链接
+# SIMPLEUI_LOGO = '/static/image/star.png'
+
+# 隐藏右侧SimpleUI广告链接和使用分析
+SIMPLEUI_HOME_INFO = False
+SIMPLEUI_ANALYSIS = False
+
+SIMPLEUI_CONFIG = {
+    # 是否使用系统默认菜单，自定义菜单时建议关闭。
+    'system_keep': False,
+
+    # 用于菜单排序和过滤, 不填此字段为默认排序和全部显示。空列表[] 为全部不显示.
+    'menu_display': ['数据管理', '权限认证'],
+
+    # 设置是否开启动态菜单, 默认为False. 如果开启, 则会在每次用户登陆时刷新展示菜单内容。
+    # 一般建议关闭。
+    'dynamic': False,
+    'menus': [
+        {
+            'app': 'auth',
+            'name': '权限认证',
+            'icon': 'fas fa-user-shield',
+            'models': [
+                {
+                    'name': '管理员',
+                    'icon': 'fa fa-user',
+                    'url': 'auth/user/'
+                }
+            ]
+        },
+
+        {
+            'name': '数据管理',
+            'icon': 'fa fa-th-list',
+            'models': [
+                {
+                    'name': '招聘列表',
+                    # 注意url按'/admin/应用名小写/模型名小写/'命名。
+                    'url': '/admin/myApp/jobinfo/',
+                    'icon': 'fa fa-tasks'
+                },
+                {
+                    'name': '用户列表',
+                    # 注意url按'/admin/应用名小写/模型名小写/'命名。
+                    'url': '/admin/myApp/user/',
+                    'icon': 'fa fa-user'
+                },
+                {
+                    'name': '城市列表',
+                    # 注意url按'/admin/应用名小写/模型名小写/'命名。
+                    'url': '/admin/myApp/city/',
+                    'icon': 'fa fa-user'
+                }
+            ]
+        },
+
+    ]
+}

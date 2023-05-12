@@ -31,22 +31,24 @@ class spider(object):
         line = linecache.getline('IP.txt', j)
         list = line.split("'")
         proxy = '--proxy-server=' + list[1].lower() + "://" + list[3]
+        print(proxy)
         return proxy
     def __init__(self, type, page):
         self.type = type  # 岗位关键正
         self.page = page  # 页码数
-        self.spiderUrl = 'https://www.zhipin.com/web/geek/job?query=%s&city=100010000&page=%s'
+        self.spiderUrl = 'https://www.zhipin.com/web/geek/job?query=%s&city=101291100&page=%s'
 
     def startBrowser(self):
         server = Service('./chromedriver.exe')
         options = webdriver.ChromeOptions()
         # 代理IP
-        proxy = self.getProxy()
+        # proxy = self.getProxy()
+        proxy = '--proxy-server=http://114.231.46.92:8089'
         options.add_argument(proxy)
         # 浏览器复用
         options.add_experimental_option('debuggerAddress', 'localhost:9222 ')  # chrome.exe --remote-debugging-port=9222
         # options.add_experimental_option('excludeSwitches', ['enable-automation'])
-        browser = webdriver.Chrome(service=server, options=options)
+        browser = webdriver.Chrome(options=options)
         return browser
 
     def main(self, page):
@@ -54,7 +56,10 @@ class spider(object):
         browser = self.startBrowser()
         print("正在爬取的页面路径" + self.spiderUrl % (self.type, self.page))
         browser.get(self.spiderUrl % (self.type, self.page))
-        time.sleep(5)
+        if browser.find_elements(by=By.XPATH, value='//div[@class="job-empty-box"]'):
+            self.page = 10
+            return
+        time.sleep(10)
 
         job_list = browser.find_elements(by=By.XPATH, value='//ul[@class="job-list-box"]/li')
         for index, job in enumerate(job_list):
@@ -281,12 +286,12 @@ if __name__ == '__main__':
     # job = ['php', 'c语言', 'c++', 'c#', 'go', 'web前端', '大数据']
     # job = ['php', 'c语言']
     # job = [  'web前端', '大数据']
-    # for i in range(len(job)):
-    #     print("正在爬取%s的数据" % job[i])
-    #     spiderObj = spider(type=job[i], page=1)
-    #     spiderObj.init()
-    #     spiderObj.main(10)
+    for i in range(len(job)):
+        print("正在爬取%s的数据" % job[i])
+        spiderObj = spider(type=job[i], page=1)
+        spiderObj.init()
+        spiderObj.main(10)
     # JobInfo.objects.all() #测试djangp是否引用成功 代表models引用成功 无其他作用
-    spiderObj = spider(type='java', page=1)
-    spiderObj.save_to_sql()
+    # spiderObj = spider(type='java', page=1)
+    # spiderObj.save_to_sql()
     # spiderObj.save_to_csv(list(map(lambda x: x.title, JobInfo.objects.all())))

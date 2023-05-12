@@ -38,7 +38,7 @@ class daili:
         can_use = []
         for proxies in proxies_list:
             try:
-                response = requests.get('https://www.baidu.com/', headers=headers, proxies=proxies, timeout=0.1)
+                response = requests.get('https://www.zhipin.com', headers=headers, proxies=proxies, timeout=0.1)
                 if response.status_code == 200:
                     can_use.append(proxies)
 

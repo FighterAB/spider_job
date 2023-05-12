@@ -72,23 +72,25 @@
             <li class="opened active">
                 <a href="#">
                     <i class="entypo-gauge"></i>
-                    <span>首页</span>
+                    <span style="font-size: 15px;font-weight: bold" >首页</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="entypo-user"></i>
-                    <span>个人中心</span>
+                    <span style="font-size: 15px;font-weight: bold" >个人中心</span>
                 </a>
                 <ul>
                     <li>
                         <a href="{% url 'selfInfo' %}">
-                            <span>个人信息</span>
+                            <i class="entypo-home"></i>
+                            <span style="font-size: 15px">个人信息</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'changePassword' %}">
-                            <span>修改密码</span>
+                            <i class="entypo-lamp"></i>
+                            <span style="font-size: 15px">修改密码</span>
                         </a>
                     </li>
                 </ul>
@@ -96,17 +98,19 @@
             <li>
                 <a href="">
                     <i class="entypo-layout"></i>
-                    <span>数据统计</span>
+                    <span style="font-size: 15px;font-weight: bold" >数据统计</span>
                 </a>
                 <ul>
                     <li>
                         <a href={% url 'tableData' %}>
-                            <span>数据总览</span>
+                            <i class="entypo-menu"></i>
+                            <span style="font-size: 15px">数据总览</span>
                         </a>
                     </li>
                     <li>
                         <a href={% url 'historyData' %}>
-                            <span>历史查阅</span>
+                            <i class="entypo-direction"></i>
+                            <span style="font-size: 15px">历史查阅</span>
                         </a>
                     </li>
 
@@ -114,47 +118,53 @@
             </li>
             <li>
                 <a href="#">
-                    <i class="entypo-mail"></i>
-                    <span>可视化图标</span>
+                    <i class="entypo-eye"></i>
+                    <span style="font-size: 15px;font-weight: bold" >可视化图标</span>
                 </a>
                 <ul>
                     <li>
                         <a href="{% url 'salary' %}">
-                            <i class="entypo-inbox"></i>
-                            <span>薪资情况</span>
+                            <i class="entypo-mail"></i>
+                            <span style="font-size: 15px">薪资情况</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'company' %}">
                             <i class="entypo-pencil"></i>
-                            <span>企业情况</span>
+                            <span style="font-size: 15px">企业情况</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'companyTags' %}">
-                            <i class="entypo-attach"></i>
-                            <span>福利词云</span>
+                            <i class="entypo-picture"></i>
+                            <span style="font-size: 15px">福利词云</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'educational' %}">
-                            <i class="entypo-attach"></i>
-                            <span>学历分布</span>
+                            <i class="entypo-book"></i>
+                            <span style="font-size: 15px">学历分布</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'companyStatus' %}">
-                            <i class="entypo-attach"></i>
-                            <span>企业融资</span>
+                            <i class="entypo-globe"></i>
+                            <span style="font-size: 15px">企业融资</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'address' %}">
-                            <i class="entypo-attach"></i>
-                            <span>城市类型</span>
+                            <i class="entypo-address"></i>
+                            <span style="font-size: 15px">城市类型</span>
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="{% url 'recommend' %}">
+                    <i class="entypo-eye"></i>
+                    <span style="font-size: 15px;font-weight: bold" >推荐职位</span>
+                </a>
             </li>
         </ul>
 
@@ -465,18 +475,19 @@
         var myChart = echarts.init(chartDom);
         var option;
 
+
         const categories = (function () {
-            let res = ['2023-04-06', '2023-04-08', '2023-04-17', '2023-04-15'];
+            let res = {{ row |safe }};
             return res;
         })();
         const data = (function () {
-            let res = [838, 467, 716, 222];
+            let res = {{ column |safe }};
             return res;
         })();
 
         option = {
             title: {
-                text: 'Dynamic Data'
+                text: '获取数据'
             },
             tooltip: {
                 trigger: 'axis',
@@ -520,7 +531,7 @@
             ],
             series: [
                 {
-                    name: 'Dynamic Bar',
+                    name: '数量',
                     type: 'bar',
                     data: data
                 }
@@ -547,7 +558,6 @@
         }, 2100);
 
         option && myChart.setOption(option);
-
 
     </script>
     {#地图#}
@@ -595,7 +605,6 @@
 
         // 注册点击事件
         mCharts.on('click', function (params) {
-            myChart.clear()
             if (provinces.hasOwnProperty(params.name)) {
                 lastArea = nowArea  // 获取父级的区域
                 let area = provinces[params.name]

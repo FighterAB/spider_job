@@ -28,7 +28,8 @@ class JobInfo(models.Model):
 
     class Meta:
         db_table = 'bossjobInfo'
-
+        verbose_name = '招聘信息表'
+        verbose_name_plural = verbose_name
 
 class User(models.Model):
     # id = models.AutoField('id',primary_key=True)
@@ -43,12 +44,38 @@ class User(models.Model):
 
     class Meta:
         db_table = 'user'
+        verbose_name = '用户表'
+        verbose_name_plural = verbose_name
 
 class Admin(models.Model):
     username = models.CharField('用户名', max_length=255,)
     password = models.CharField('密码', max_length=255,)
     class Meta:
         db_table = 'admin'
+
+# 省份
+class Province(models.Model):
+    name = models.CharField('省份名称', max_length=20, default='')
+    code = models.CharField('省份编码', max_length=10, default='',primary_key=True)
+    class Meta:
+        db_table = 'province'
+
+# 市
+class City(models.Model):
+    name = models.CharField('城市名称', max_length=30, default='')
+    code = models.CharField('城市编码', max_length=10, default='',primary_key=True)
+    pro_code = models.ForeignKey(Province, to_field='code',on_delete=models.CASCADE)
+    hotCity = models.BooleanField('热门城市', default=False)
+    class Meta:
+        db_table = 'city'
+
+# 区
+# class District(models.Model):
+#     name = models.CharField('区名称', max_length=30, default='')
+#     code = models.CharField('区编码', max_length=10, default='')
+#     class Meta:
+#         db_table = 'district'
+#     pass
 
 
 class History(models.Model):

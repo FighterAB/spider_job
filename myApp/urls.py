@@ -34,4 +34,6 @@ urlpatterns = [
 
     path('address/', views.address, name="address"),
 
+    path('recommend/', views.recommend, name="recommend"),
+
 ]

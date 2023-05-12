@@ -8,7 +8,7 @@
     <meta name="description" content="Neon Admin Panel">
     <meta name="author" content="">
 
-    <title>福利词云</title>
+    <title>首页</title>
 
 
     <link rel="stylesheet" href="/static/css/jquery-ui-1.10.3.custom.min.css">
@@ -67,11 +67,9 @@
 
         </div>
 
+
         <ul id="main-menu" class="">
-            <!-- add class "multiple-expanded" to allow multiple submenus to open -->
-            <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-            <!-- Search Bar -->
-            <li class="opened active">
+            <li>
                 <a href="{% url 'home' %}">
                     <i class="entypo-gauge"></i>
                     <span style="font-size: 15px;font-weight: bold">首页</span>
@@ -83,13 +81,13 @@
                     <span style="font-size: 15px;font-weight: bold">个人中心</span>
                 </a>
                 <ul>
-                    <li class="active">
-                        <a href=" {% url 'selfInfo' %}">
+                    <li>
+                        <a href="{% url 'selfInfo' %}">
                             <i class="entypo-home"></i>
                             <span style="font-size: 15px">个人信息</span>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="{% url 'changePassword' %}">
                             <i class="entypo-lamp"></i>
                             <span style="font-size: 15px">修改密码</span>
@@ -104,13 +102,13 @@
                 </a>
                 <ul>
                     <li>
-                        <a href="{% url 'tableData' %}">
+                        <a href={% url 'tableData' %}>
                             <i class="entypo-menu"></i>
                             <span style="font-size: 15px">数据总览</span>
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'historyData' %}">
+                        <a href={% url 'historyData' %}>
                             <i class="entypo-direction"></i>
                             <span style="font-size: 15px">历史查阅</span>
                         </a>
@@ -118,7 +116,7 @@
 
                 </ul>
             </li>
-            <li class="opened active">
+            <li>
                 <a href="#">
                     <i class="entypo-eye"></i>
                     <span style="font-size: 15px;font-weight: bold">可视化图标</span>
@@ -137,7 +135,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{% url 'companyTags' %}">
                             <i class="entypo-picture"></i>
                             <span style="font-size: 15px">福利词云</span>
                         </a>
@@ -162,10 +160,10 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <a href="{% url 'recommend' %}">
+            <li class="opened active">
+                <a href="#">
                     <i class="entypo-eye"></i>
-                    <span style="font-size: 15px;font-weight: bold" >推荐职位</span>
+                    <span style="font-size: 15px;font-weight: bold">推荐职位</span>
                 </a>
             </li>
         </ul>
@@ -193,54 +191,107 @@
         </div>
         <hr>
         <ol class="breadcrumb bc-3">
-            <li>
-                <a href="#"><i class="entypo-home"></i>可视化图表</a>
-            </li>
             <li class="active">
-                <a href="#"><strong>福利词云</strong></a>
+                <a href="#"><i class="entypo-home"></i><strong>职位推荐</strong></a>
             </li>
         </ol>
-        <h2>福利词云</h2>
+    <div style="display: flex;justify-content: space-between">
+        <h2>职位推荐</h2>
+        <button type="button" class="btn btn-success" onclick="reset()">刷新</button>
+    </div>
+
         <br>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default" data-collapsed="0">
-                    <!-- panel head -->
-                    <div class="panel-heading">
-                        <div class="panel-title">公司福利</div>
-                        <div class="panel-options">
-                            <a href="#sample-modal" data-toggle="modal" data-target="#sample-modal-dialog-1"
-                               class="bg"><i class="entypo-cog"></i></a>
-                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                            <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a>
+        <div class="row" id="abc">
+            <div class="col-md-12">
+                {% for i in jobs %}
+                    <div class="member-entry">
+                        <a href="{{ i.companyUrl }}" class="member-img">
+                            <img src="{{ i.companyAvatar }}" class="img-rounded">
+                            <i class="entypo-forward"></i>
+                        </a>
+                        <div class="member-details">
+                            <h4>
+                                <div onclick="myBtn('{{ i.detailUrl }}',{{ i.id }})">
+                                    <a class="text-info">{{ i.title }}</a>
+                                </div>
+                            </h4>
+
+                            <!-- Details with Icons -->
+                            <div class="row info-list">
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-briefcase"></i>
+                                    {#                                    <a class="text-info" href="{{ i.detailUrl }}">{{ i.title }}</a>#}
+                                    <a href="{{ i.companyUrl }}" style="font-weight: bold">{{ i.companyTitle }}</a>
+
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-star"></i>
+                                    <a class='text-danger' href="#">
+                                        {% if i.pratice == 0 %}
+                                            {{ i.salary }} K/月
+                                            {% if i.salaryMonth != '0' %}
+                                                ·{{ i.salaryMonth }}薪
+                                            {% endif %}
+                                        {% else %}
+                                            {{ i.salary }}元/天
+                                        {% endif %}
+                                    </a>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-eye"></i>
+                                    <a href="#">
+                                        {{ i.workExperience }}|{{ i.educational }}|{{ i.type }}
+                                    </a>
+                                </div>
+
+                                <div class="clear"></div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-location"></i>
+                                    <a href="#">{{ i.address }}</a>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-mail"></i>
+                                    <a href="#">{{ i.hrWork }}->{{ i.hrName }}</a>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <i class="entypo-user"></i>
+
+                                    <a href="#">{{ i.companyStatus }} | {{ i.companyPeople }}人</a>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <i></i>
+                                    {% for i in i.workTag %}
+
+                                        {% if i != '' %}
+                                            <code>{{ i }}</code>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-6">
+                                    {% if  i.job.companyTags != '无' %}
+                                        {% for i in i.companyTags %}
+                                            {% if i != '无' %}
+                                                <code style="margin-bottom: 3px;display: inline-block">{{ i }}</code>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
                         </div>
+
                     </div>
-                    <div class="panel-body">
-                        <div class="btn-group">
-                            <img style="width: 100%" src="/static/picture/companytags_cloud1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default" data-collapsed="0">
-                    <!-- panel head -->
-                    <div class="panel-heading">
-                        <div class="panel-title">岗位名称</div>
-                        <div class="panel-options">
-                            <a href="#sample-modal" data-toggle="modal" data-target="#sample-modal-dialog-1"
-                               class="bg"><i class="entypo-cog"></i></a>
-                            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-                            <a href="#" data-rel="reload"><i class="entypo-arrows-ccw"></i></a>
-                        </div>
-                    </div>
-                    <div class="panel-body">
-                        <img style="width: 100%" src="/static/picture/companytags_cloud2.jpg">
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
-
 
         <footer class="main">
 
@@ -248,38 +299,35 @@
 
         </footer>
     </div>
+
+
+    <link rel="stylesheet" href="/static/css/jquery-jvectormap-2.0.5.css">
+    <link rel="stylesheet" href="/static/css/rickshaw.min.css">
+
+    <!-- Bottom Scripts -->
+    <script src="/static/js/main-gsap.js"></script>
+    <script src="/static/js/jquery-ui-1.10.3.minimal.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/joinable.js"></script>
+    <script src="/static/js/resizeable.js"></script>
+    {#    <script src="/static/js/neon-api.js"></script>#}
+    {#    <script src="/static/js/jquery.sparkline.min.js"></script>#}
+    {#    <script src="/static/js/d3.v3.js"></script>#}
+    {#    <script src="/static/js/rickshaw.min.js"></script>#}
+    {#    <script src="/static/js/neon-chat.js"></script>#}
+    <script src="/static/js/neon-custom.js"></script>
+    <script src="/static/js/neon-demo.js"></script>
+    <script src="/static/js/echarts.min.js"></script>
+
+<script type="text/javascript">
+
+		function reset(){
+
+			$("#abc").load(location.href + " #abc")
+
+		}
+
+	</script>
 </div>
-
-
-<link rel="stylesheet" href="/static/css/jquery-jvectormap-2.0.5.css">
-<link rel="stylesheet" href="/static/css/rickshaw.min.css">
-
-<!-- Bottom Scripts -->
-<script src="/static/js/main-gsap.js"></script>
-{#<script src="/static/js/jquery-ui-1.10.3.minimal.min.js"></script>#}
-{#<script src="/static/js/bootstrap.js"></script>#}
-{#<script src="/static/js/joinable.js"></script>#}
-<script src="/static/js/resizeable.js"></script>
-{#<script src="/static/js/neon-api.js"></script>#}
-{#<script src="/static/js/jquery-jvectormap-2.0.5.min.js"></script>#}
-{#<script src="/static/js/jquery-jvectormap-europe-merc-en.js"></script>#}
-{#<script src="/static/js/jquery-jvectormap-world-mill-en.js"></script>#}
-{#<script src="/static/js/jquery.sparkline.min.js"></script>#}
-{#<script src="/static/js/d3.v3.js"></script>#}
-<script src="/static/js/rickshaw.min.js"></script>
-<script src="/static/js/neon-chat.js"></script>
-<script src="/static/js/neon-custom.js"></script>
-{#<script src="/static/js/neon-demo.js"></script>#}
-<script src="/static/js/echarts.min.js"></script>
-{#<script src="/static/js/fileinput.js"></script>#}
 </body>
-
-
-{#禁用“确认重新提交表单”#}
-<script>
-    $(function () {
-        //禁用“确认重新提交表单”
-        window.history.replaceState(null, null, window.location.href);
-    })
-</script>
 </html>

@@ -74,23 +74,23 @@
             <li class="opened active">
                 <a href="{% url 'home' %}">
                     <i class="entypo-gauge"></i>
-                    <span>首页</span>
+                    <span style="font-size: 15px;font-weight: bold">首页</span>
                 </a>
             </li>
             <li>
                 <a href="#">
                     <i class="entypo-user"></i>
-                    <span>个人中心</span>
+                    <span style="font-size: 15px;font-weight: bold">个人中心</span>
                 </a>
                 <ul>
                     <li class="active">
                         <a href=" {% url 'selfInfo' %}">
-                            <span>个人信息</span>
+                            <span style="font-size: 15px">个人信息</span>
                         </a>
                     </li>
                     <li class="active">
                         <a href="#">
-                            <span>修改密码</span>
+                            <span style="font-size: 15px">修改密码</span>
                         </a>
                     </li>
                 </ul>
@@ -98,17 +98,17 @@
             <li>
                 <a href="#">
                     <i class="entypo-layout"></i>
-                    <span>数据统计</span>
+                    <span style="font-size: 15px;font-weight: bold">数据统计</span>
                 </a>
                 <ul>
                     <li>
                         <a href="{% url 'tableData' %}">
-                            <span>数据总览</span>
+                            <span style="font-size: 15px">数据总览</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'historyData' %}">
-                            <span>历史查阅</span>
+                            <span style="font-size: 15px">历史查阅</span>
                         </a>
                     </li>
 
@@ -117,46 +117,52 @@
             <li class="opened active">
                 <a href="#">
                     <i class="entypo-chart-pie"></i>
-                    <span>可视化图标</span>
+                    <span style="font-size: 15px;font-weight: bold">可视化图标</span>
                 </a>
                 <ul>
                     <li>
                         <a href="{% url 'salary' %}">
                             <i class="entypo-inbox"></i>
-                            <span>薪资情况</span>
+                            <span style="font-size: 15px">薪资情况</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'company' %}">
                             <i class="entypo-pencil"></i>
-                            <span>企业情况</span>
+                            <span style="font-size: 15px">企业情况</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'companyTags' %}">
                             <i class="entypo-attach"></i>
-                            <span>福利词云</span>
+                            <span style="font-size: 15px">福利词云</span>
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <i class="entypo-attach"></i>
-                            <span>学历分布</span>
+                            <span style="font-size: 15px">学历分布</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'companyStatus' %}">
                             <i class="entypo-attach"></i>
-                            <span>企业融资</span>
+                            <span style="font-size: 15px">企业融资</span>
                         </a>
                     </li>
                     <li>
                         <a href="{% url 'address' %}">
                             <i class="entypo-attach"></i>
-                            <span>城市类型</span>
+                            <span style="font-size: 15px">城市类型</span>
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li>
+                <a href="{% url 'recommend' %}">
+                    <i class="entypo-eye"></i>
+                    <span style="font-size: 15px;font-weight: bold" >推荐职位</span>
+                </a>
             </li>
         </ul>
 
